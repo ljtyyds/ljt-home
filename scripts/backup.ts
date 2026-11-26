@@ -1,0 +1,12 @@
+import fs from "node:fs";
+import path from "node:path";
+import { db,dataDir } from "../server/db";
+const stamp=new Date().toISOString().replace(/[:.]/g,"-");
+const destination=path.resolve(process.env.BACKUP_DIR || "backups",stamp);
+fs.mkdirSync(destination,{recursive:true,mode:0o700});
+db.prepare("VACUUM INTO ?").run(path.join(destination,"portal.sqlite"));
+fs.copyFileSync(path.join(dataDir,".master-key"),path.join(destination,".master-key"));
+fs.chmodSync(path.join(destination,".master-key"),0o600);
+fs.writeFileSync(path.join(destination,"RESTORE.txt"),"此目录包含私人数据和 AI 配置解密密钥，请妥善保管并加密后离站保存。\n恢复：停止应用，将 portal.sqlite 与 .master-key 一起放入 DATA_DIR。不要在应用运行时覆盖数据库。环境变量中的密钥需另行安全保管。\n",{mode:0o600});
+console.log("一致性备份已完成："+destination);
+db.close();

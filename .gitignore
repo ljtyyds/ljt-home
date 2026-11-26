@@ -1,0 +1,34 @@
+node_modules/
+.next/
+.env*
+!.env.example
+data/
+backups/
+work/
+playwright-report/
+test-results/
+*.tsbuildinfo
+
+# Local credentials and operating-system files
+*.pem
+*.key
+.ssh/
+.DS_Store
+Thumbs.db
+
+# Private runtime state and exports must never be published
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.db
+*.db-*
+.master-key
+.master_key
+setup-token.txt
+*.p12
+*.pfx
+*.log
+uploads/
+attachments/
+private-data/
+exports/
